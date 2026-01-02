@@ -1,0 +1,28 @@
+name: Daily Attendance
+
+on:
+  schedule:
+    # 3:30 UTC is 9:00 AM IST
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  mark-attendance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Random Delay (0-90 mins)
+        run: |
+          # 5400 seconds = 90 minutes
+          DELAY=$((RANDOM % 5401))
+          echo "Sleeping for $DELAY seconds (~$((DELAY / 60)) minutes)..."
+          sleep $DELAY
+
+      - name: Mark Attendance
+        env:
+          COOKIE: ${{ secrets.ATTENDANCE_COOKIE }}
+          # Using a test URL for now, can be replaced with env var or secret later
+          URL: "https://postman-echo.com/get?msg=attendance_marked" 
+        run: |
+          echo "Hitting URL: $URL"
+          # -b passes the cookie string
+          curl -v -b "$COOKIE" "$URL"
