@@ -20,9 +20,27 @@ jobs:
       - name: Mark Attendance
         env:
           COOKIE: ${{ secrets.ATTENDANCE_COOKIE }}
-          # Using a test URL for now, can be replaced with env var or secret later
-          URL: "https://postman-echo.com/get?msg=attendance_marked" 
         run: |
-          echo "Hitting URL: $URL"
-          # -b passes the cookie string
-          curl -v -b "$COOKIE" "$URL"
+          set -euo pipefail
+      
+          ENDPOINT="https://paypay-india.greythr.com/v3/api/attendance/mark-attendance?action=Signin"
+
+          curl --request POST \
+            --url "$ENDPOINT" \
+            --header "accept: application/json" \
+            --header "accept-language: en-GB,en-US;q=0.9,en;q=0.8" \
+            --header "content-type: application/json" \
+            --header "cookie: $COOKIE" \
+            --header "origin: https://paypay-india.greythr.com" \
+            --header "priority: u=1, i" \
+            --header "referer: https://paypay-india.greythr.com/v3/portal/ess/home" \
+            --header 'sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"' \
+            --header "sec-ch-ua-mobile: ?0" \
+            --header 'sec-ch-ua-platform: "macOS"' \
+            --header "sec-fetch-dest: empty" \
+            --header "sec-fetch-mode: cors" \
+            --header "sec-fetch-site: same-origin" \
+            --header "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" \
+            --header "x-requested-with: XMLHttpRequest" \
+            --data '{}'
+
