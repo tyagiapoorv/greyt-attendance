@@ -10,10 +10,9 @@ jobs:
   mark-attendance:
     runs-on: ubuntu-latest
     steps:
-      - name: Random Delay (0-90 mins)
+      - name: Random Delay (0-30 mins)
         run: |
-          # 5400 seconds = 90 minutes
-          DELAY=$((RANDOM % 5401))
+          DELAY=$((RANDOM % 1801))
           echo "Sleeping for $DELAY seconds (~$((DELAY / 60)) minutes)..."
           sleep $DELAY
 
